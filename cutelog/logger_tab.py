@@ -148,7 +148,7 @@ class LogRecord:
         if self.levelname is not None:
             self.levelname = self.levelname.upper()
 
-        self.created = logDict.get("created")
+        self.created = float(logDict.get("created"))
         if self.created is None:
             self.created = logDict.get("time")
         if self.created is None or type(self.created) not in (int, float):
