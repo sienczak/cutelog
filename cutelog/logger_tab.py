@@ -135,6 +135,7 @@ class LogRecord:
     It's used to avoid creation of useless fields that logging.makeLogRecord produces,
     as well as imitate some of its behavior.
     """
+
     def __init__(self, logDict):
         # this is what logging.Formatter (for asctime) did previously, but it didn't delete "msg"
         self.message = logDict.get("message")
@@ -148,11 +149,13 @@ class LogRecord:
         if self.levelname is not None:
             self.levelname = self.levelname.upper()
 
-        self.created = float(logDict.get("created"))
+        self.created = logDict.get("created")
         if self.created is None:
             self.created = logDict.get("time")
         if self.created is None or type(self.created) not in (int, float):
             self.created = datetime.now().timestamp()
+        if self.created is not None:
+            self.created = float(self.created)
 
         self._logDict = logDict
         self.generate_asctime()
